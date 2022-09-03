@@ -9,31 +9,37 @@ api = Api(app)
 url = 'https://en.wikipedia.org/wiki/'
 # @app.route('/<string:user_query>.wiki-search.com')
 
+
 class Wiki(Resource):
-    def get(self, user_query):
+    def get(self, user_query, links=[]):
+        # CREATE REQUEST
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
+
+
+        # LOCATE DIV AND CHILD LIST
         div = doc.find('div', class_='mw-parser-output')
         li = div.find_all('li')
 
-        # loop through list
+
+        # LOOP THROUGH LIST
         links = []
         for link in li:
             if user_query.capitalize() in str(link.text):
                 element = link.find(href=True)
                 try:
                     element_href = element['href']
-                    links.append(url + element_href[element_href.rfind('/') + 1:])
+                    links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/
                 except TypeError:
                     pass
 
-        # decide whether to return links or a link
         if links != []:
             return jsonify({'links': [links]})
         else:
             return jsonify({'links': [url + user_query]})
-    
 
+
+# RESOURCE API's
 api.add_resource(Wiki, '/<string:user_query>.wiki-search.com')
 
 
