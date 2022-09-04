@@ -11,7 +11,7 @@ url = 'https://en.wikipedia.org/wiki/'
 
 
 class Wiki(Resource):
-    def get(self, user_query, links=[]):
+    def get(self, user_query):
         # CREATE REQUEST
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
