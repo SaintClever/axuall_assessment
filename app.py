@@ -1,8 +1,9 @@
+import json
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
 from flask_restful import Resource, Api
 import requests
-import json
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -11,7 +12,7 @@ url = 'https://en.wikipedia.org/wiki/'
 
 
 class Wiki(Resource):
-    def get(self, user_query) -> 'json':
+    def get(self, user_query) -> jsonify:
         '''REATE REQUEST'''
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
