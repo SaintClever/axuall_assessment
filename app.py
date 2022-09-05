@@ -12,17 +12,17 @@ url = 'https://en.wikipedia.org/wiki/'
 
 class Wiki(Resource):
     def get(self, user_query):
-        # CREATE REQUEST
+        '''REATE REQUEST'''
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
 
 
-        # LOCATE DIV AND CHILD LIST
+        '''LOCATE DIV AND CHILD LIST'''
         div = doc.find('div', class_='mw-parser-output')
         li = div.find_all('li')
 
 
-        # LOOP THROUGH LIST
+        '''LOOP THROUGH LIST'''
         links = []
         for link in li:
             if user_query.capitalize() in str(link.text):
@@ -31,6 +31,8 @@ class Wiki(Resource):
                     element_href = element['href']
                     links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/
 
+
+        '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
         if links != []:
             return jsonify({'links': [links]})
         else:
