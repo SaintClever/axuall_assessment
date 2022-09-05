@@ -27,7 +27,8 @@ class Wiki(Resource):
         for link in li:
             if user_query.capitalize() in str(link.text):
                 element = link.find(href=True)
-                if element:
+                # if element:
+                if (element := link.find(href=True)):
                     element_href = element['href']
                     links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/
 
