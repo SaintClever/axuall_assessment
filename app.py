@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from bs4 import BeautifulSoup
 from flask_restful import Resource, Api
+from bs4 import BeautifulSoup
 import requests
 
 
