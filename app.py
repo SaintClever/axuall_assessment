@@ -1,4 +1,3 @@
-import json
 from flask import Flask, jsonify
 from bs4 import BeautifulSoup
 from flask_restful import Resource, Api
@@ -17,28 +16,21 @@ class Wiki(Resource):
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
 
-
         '''LOCATE DIV AND CHILD LIST'''
         div = doc.find('div', class_='mw-parser-output')
         li = div.find_all('li')
-
 
         '''LOOP THROUGH LIST'''
         links = []
         for link in li:
             if user_query.capitalize() in str(link.text) and (element := link.find(href=True)):
-                # element = link.find(href=True)
-                # if element:
                     element_href = element['href']
-                    links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/
+                    links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
 
-
-        '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
+        '''make sure href links return first else return single href'''
         if links != []:
             return jsonify({'links': [links]})
-        else:
-            return jsonify({'links': [url + user_query]})
-
+        return jsonify({'links': [url + user_query]})
 
 # RESOURCE API's
 api.add_resource(Wiki, '/<string:user_query>.wiki-search.com')
