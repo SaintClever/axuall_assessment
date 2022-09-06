@@ -23,9 +23,11 @@ class Wiki(Resource):
         '''LOOP THROUGH LIST'''
         links = []
         for link in li:
-            if user_query.capitalize() in str(link.text) and (element := link.find(href=True)):
+            if user_query.capitalize() in str(link.text) and\
+                    (element := link.find(href=True)):
                     element_href = element['href']
-                    links.append(url + element_href[element_href.rfind('/') + 1:]) # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
+                    # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
+                    links.append(url + element_href[element_href.rfind('/') + 1:])
 
         '''make sure href links return first else return single href'''
         if links != []:
