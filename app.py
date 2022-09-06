@@ -32,11 +32,10 @@ class Wiki(Resource):
         '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
         if links != []:
             return jsonify({'links': links})
-        response = requests.get(url + user_query)
-        doc = BeautifulSoup(response.text, 'html.parser')
-        span = doc.find('span', class_='mw-page-title-main')
-        span.text
-        return jsonify({'links': [url + span.text]})
+        else:
+            response = requests.get(url + user_query)
+            span = doc.find('span', class_='mw-page-title-main').text.replace(' ', '_')
+            return jsonify({'links': [url + span]})
 
 # RESOURCE API's
 api.add_resource(Wiki, '/<string:user_query>.wiki-search.com')
