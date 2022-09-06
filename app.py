@@ -31,7 +31,7 @@ class Wiki(Resource):
 
         '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
         if links != []:
-            return jsonify({'links': [links]})
+            return jsonify({'links': links})
         return jsonify({'links': [url + user_query]})
 
 # RESOURCE API's
