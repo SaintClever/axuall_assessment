@@ -29,7 +29,7 @@ class Wiki(Resource):
                     # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
                     links.append(url + element_href[element_href.rfind('/') + 1:])
 
-        '''make sure href links return first else return single href'''
+        '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
         if links != []:
             return jsonify({'links': [links]})
         return jsonify({'links': [url + user_query]})
