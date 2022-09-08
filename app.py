@@ -37,8 +37,7 @@ class Wiki(Resource):
         ]
 
         '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
-        if links != []:
-            return jsonify({'links': links})
+        if links != []: return jsonify({'links': links})
         span = doc.find('span', class_='mw-page-title-main').text.replace(' ', '_')
         return jsonify({'links': [url + span]})
 
