@@ -12,7 +12,7 @@ url = 'https://en.wikipedia.org/wiki/'
 
 class Wiki(Resource):
     def get(self, user_query) -> jsonify:
-        '''REATE REQUEST'''
+        '''CREATE REQUEST'''
         response = requests.get(url + user_query)
         doc = BeautifulSoup(response.text, 'html.parser')
 
@@ -21,13 +21,20 @@ class Wiki(Resource):
         li = div.find_all('li')
 
         '''LOOP THROUGH LIST'''
-        links = []
-        for link in li:
-            if user_query.capitalize() in str(link.text) and\
-                    (element := link.find(href=True)):
-                    element_href = element['href']
-                    # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
-                    links.append(url + element_href[element_href.rfind('/') + 1:])
+        # links = []
+        # for link in li:
+        #     if user_query.capitalize() in str(link.text) and\
+        #             (element := link.find(href=True)):
+        #             element_href = element['href']
+        #             # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
+        #             links.append(url + element_href[element_href.rfind('/') + 1:])
+
+        # Shorthand
+        links = [
+            url + element['href'][element['href'].rfind('/') + 1:]
+            for link in li if user_query.capitalize() in str(link.text) and
+            (element := link.find(href=True))
+        ]
 
         '''MAKE SURE HREF LINKS RETURN FIRST ELSE RETURN SINGLE HREF'''
         if links != []:
