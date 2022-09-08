@@ -29,7 +29,7 @@ class Wiki(Resource):
         #             # REMOVE /wiki/ from https://en.wikipedia.org/wiki/
         #             links.append(url + element_href[element_href.rfind('/') + 1:])
 
-        # Shorthand
+        '''REFACTOR FOR LOOP'''
         links = [
             url + element['href'][element['href'].rfind('/') + 1:]
             for link in li if user_query.capitalize() in str(link.text) and
